@@ -1,36 +1,5 @@
-# Welcome to Remix + Vite!
+## 前端周刊
 
-📖 See the [Remix docs](https://remix.run/docs) and the [Remix Vite docs](https://remix.run/docs/en/main/future/vite) for details on supported features.
-
-## Development
-
-Run the Vite dev server:
-
-```shellscript
-npm run dev
-```
-
-## Deployment
-
-First, build your app for production:
-
-```sh
-npm run build
-```
-
-Then run the app in production mode:
-
-```sh
-npm start
-```
-
-Now you'll need to pick a host to deploy it to.
-
-### DIY
-
-If you're familiar with deploying Node applications, the built-in Remix app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-- `build/server`
-- `build/client`
+## TODO
+- [ ] 周刊里呈现的内容链接，可以点击进一步进行分析与摘要
+- [ ] 代码结构由 loader, plan, prompt 组成，但是貌似结构类型没有被统一，需要处理

@@ -1,0 +1,18 @@
+[
+  {
+    "name": "前端早读课",
+    "items": [
+      {
+        "title": "【早说】内部顾问",
+        "content": "总结如下:\n\n1. 把自己当作\"内部顾问\"来提供建议和观点,即使建议没有被实施也不要沮丧。\n\n2. 养成在表达观点后提出问题的习惯,增加获得认可和讨论的机会。\n\n3. 建立了一个名为\"早说时间\"的微信群,分享所见所读,希望通过群内交流提高自我认知。邀请有兴趣的人加入。\n\n4. 建议从每天早上花一个小时进行晨读习惯,可以加好友进群一起交流。",
+        "date": "2024-05-10 08:01:00"
+      },
+      {
+        "title": "【第3255期】React 中的 use() 是如何在内部工作的？",
+        "content": "本文主要介绍了以下内容:\n\n1. React 中的 use() 函数是一个 React Hook,用于读取 Promise 或上下文的值。use() 函数内部使用 useThenable() 处理 Promise, useContext() 处理上下文。\n\n2. 通过自定义 useThenable() 函数, 可以更好地处理 Promise 的加载状态, 实现悬挂和异步加载组件。\n\n3. 演示了使用自定义的 myUseThenable() 函数来处理 Promise 的用法, 并与 use() 的用法类似。\n\n4. 讨论了即使 Promise 已经解析完成, 也无法立即解包 Promise 值的问题, 需要通过hack的方式才能立即获取解析后的值。\n\n5. use() 函数在内部使用 readContext() 实现对上下文的读取, 与 useContext() 功能等价。\n\n6. use() 可以有条件地调用, 因为其数据来源不依赖于 Fiber 节点的钩子链表, 而是直接附加在 Promise 或上下文本身上。\n\n总之, 本文深入探讨了 use() 函数的内部实现原理和局限性, 对理解 React 中 Hooks 的工作机制很有帮助。",
+        "date": "2024-05-10 08:01:00"
+      }
+    ],
+    "url": "http://www.jintiankansha.me/rss/GEZDAMRXPQ4GIMZTG44DMZTFGE3DMMTBMYYDQZLGMVTGKMZZGI3DSMJWMI4TSNTBG4ZWMYLDME======"
+  }
+]

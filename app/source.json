@@ -1,0 +1,19 @@
+{
+  "feeds": [
+    {
+      "name": "前端早读课",
+      "type": "rss",
+      "url": "http://www.jintiankansha.me/rss/GEZDAMRXPQ4GIMZTG44DMZTFGE3DMMTBMYYDQZLGMVTGKMZZGI3DSMJWMI4TSNTBG4ZWMYLDME======"
+    },
+    {
+      "name": "TypeScript 博客",
+      "type": "blog",
+      "url": "https://devblogs.microsoft.com/typescript/"
+    },
+    {
+      "url": "https://github.com/hijiangtao/javascript-articles-monthly",
+      "name": "JavaScript 文章精选月刊",
+      "type": "github"
+    }
+  ]
+}
