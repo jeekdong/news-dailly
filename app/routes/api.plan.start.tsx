@@ -15,11 +15,17 @@ import {
 
 export async function action({ request }: ActionFunctionArgs) {
   sendLog({
-    message: '开始解析',
+    message: {
+      content: '开始解析',
+      name: 'plan-start',
+    },
     type: 'info',
   })
   sendLog({
-    message: `source: ${JSON.stringify(source)}`,
+    message: {
+      content: source,
+      name: 'source',
+    },
     type: 'info',
   })
   const body = await request.formData()
@@ -31,7 +37,10 @@ export async function action({ request }: ActionFunctionArgs) {
   })
   plan.fetchUpdateWithSummary().then((result) => {
     sendLog({
-      message: `解析完成: ${JSON.stringify(result)}`,
+      message: {
+        content: result,
+        name: 'plan-end',
+      },
       type: 'info',
     })
   })

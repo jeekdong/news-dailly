@@ -5,16 +5,15 @@
 import { Readability } from '@mozilla/readability'
 import { JSDOM } from 'jsdom'
 
-import { buildHTML } from '~/utils/constants'
-
 import { WebFetcher } from '../web-fetcher'
+import { buildHTML } from '~/utils/constants'
 
 export function formatHtmlString({
   htmlString,
   needTagName = false,
 }: {
-  htmlString: string,
-  needTagName?: boolean,
+  htmlString: string
+  needTagName?: boolean
 }) {
   // 删除 HTML string 中的所有标签（包括标签内的属性）
   // 删除 script 标签内容
@@ -25,19 +24,19 @@ export function formatHtmlString({
     .replace(/[\r\n\t]/g, '')
     .replace(/<[^>]*>/g, (match) => {
       // 保留标签名，删除标签内的属性
-      if (needTagName) {
+      if (needTagName)
         return match.replace(/<([^ ]*).*/, '<$1>')
-      }
+
       // 删除包括 标签名 和 标签属性
       return ''
     })
   return result
 }
 
-type GetMainWebOptions = {
+interface GetMainWebOptions {
   needHtmlTemplate?: boolean
-  fetchMode?: 'browser' | 'fetch',
-  algorithm?: 'regex' | 'readability',
+  fetchMode?: 'browser' | 'fetch'
+  algorithm?: 'regex' | 'readability'
   algorithmOptions?: {
     needTagName?: boolean
   }
@@ -47,31 +46,32 @@ export type GetMainWebByStringOptions = Omit<GetMainWebOptions, 'fetchMode'>
 export type GetMainWebByUrlOptions = Omit<GetMainWebOptions, 'needHtmlTemplate'>
 
 export function getMainWebByString(htmlString: string, options?: GetMainWebByStringOptions) {
-  if (options?.needHtmlTemplate) {
+  if (options?.needHtmlTemplate)
     htmlString = buildHTML(htmlString)
-  }
+
   const algorithm = options?.algorithm || 'readability'
-  if (algorithm=== 'regex') {
+  if (algorithm === 'regex') {
     return {
       success: true,
-      content: formatHtmlString({ 
+      content: formatHtmlString({
         htmlString,
         ...options?.algorithmOptions,
       }),
     }
-  } else if (algorithm === 'readability') {
+  }
+  else if (algorithm === 'readability') {
     const doc = new JSDOM(htmlString)
 
-    const article = new Readability(doc.window.document).parse();
+    const article = new Readability(doc.window.document).parse()
     return {
       success: true,
       content: article?.content || '',
-    };
+    }
   }
   return {
     success: false,
     content: '',
-  };
+  }
 }
 
 export async function getMainWebByUrl(url: string, options?: GetMainWebByUrlOptions) {
@@ -79,14 +79,15 @@ export async function getMainWebByUrl(url: string, options?: GetMainWebByUrlOpti
   const fetcher = new WebFetcher({ url, mode: options?.fetchMode || 'browser' })
   try {
     htmlString = await fetcher.fetchContent()
-  } catch(err) {
+  }
+  catch (err) {
     console.log('url 解析错误', err)
     return {
       success: false,
       error: err,
-      content: ''
-    };
+      content: '',
+    }
   }
-  
+
   return getMainWebByString(htmlString, options)
 }

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { useLatest } from 'react-use'
 
 import type { LogData } from '~/types/sse'
 
@@ -57,4 +58,62 @@ export function useLogEventSource(
   }, [])
 
   return logList
+}
+
+export function useLogFormatEventSource(
+  url: string,
+) {
+  const [source] = useEventSource(url)
+
+  const [logList, setLogList] = useState<LogData[]>([])
+  const [sourceData, setSourceData] = useState<any[]>([])
+  const [sourceLogData, setSourceLogData] = useState<any[]>([])
+  const [globalLogData, setGlobalLogData] = useState<any[]>([])
+  const [resultLogData, setResultLogData] = useState<any>()
+
+  const latestSourceData = useLatest(sourceData)
+
+  useEventSourceListener(source, ['message'], (evt) => {
+    const data = JSON.parse(evt.data)
+    if (data?.message?.name === 'source')
+      setSourceData(data.message.content.feeds)
+    if (data?.message?.name === 'plan-end')
+      setResultLogData(data)
+
+    if (data?.message?.key) {
+      // 找到这个 key 在 sourceData 中的索引
+      const index = latestSourceData.current.findIndex(item => item.url === data.message.key)
+      if (index !== -1) {
+        setSourceLogData((pre) => {
+          const newPre = [...pre]
+          newPre[index] = Array.isArray(newPre[index])
+            ? [...newPre[index], data]
+            : [data]
+          return newPre
+        })
+      }
+    }
+    else {
+      setGlobalLogData(pre => [...pre, data])
+    }
+
+    setLogList(pre => [...pre, data])
+  }, [])
+
+  const handleClear = () => {
+    setLogList([])
+    setSourceData([])
+    setSourceLogData([])
+    setGlobalLogData([])
+    setResultLogData(undefined)
+  }
+
+  return {
+    logList,
+    sourceData,
+    sourceLogData,
+    globalLogData,
+    resultLogData,
+    handleClear,
+  }
 }

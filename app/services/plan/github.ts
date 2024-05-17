@@ -44,11 +44,27 @@ export class GithubPlan implements IPlanStrategy {
     const commits = await this.loader.parse({
       since: dayjs().subtract(1, this.period).toISOString(),
     }) || []
+    sendLog({
+      message: {
+        content: `获取${commits.length}项内容`,
+        name: '更新内容数',
+        key: this.source.url,
+      },
+      type: 'info',
+    })
     return Promise.all(commits.map(async (commit) => {
       const summary = await this.getSummary(`commit: ${commit.title}, date: ${dayjs(commit.date).format('YYYY-MM-DD HH:mm:ss')}, files: ${JSON.stringify(commit.files)}}`)
 
       sendLog({
-        message: `Github 获取内容: ${this.source.url}, 标题: ${commit.title}, 总结: ${summary} 日期: ${dayjs(commit.date).format('YYYY-MM-DD HH:mm:ss')}`,
+        message: {
+          name: '获取内容',
+          content: {
+            title: commit.title,
+            summary,
+            date: dayjs(commit.date).format('YYYY-MM-DD HH:mm:ss'),
+          },
+          key: this.source.url,
+        },
         type: 'info',
       })
 

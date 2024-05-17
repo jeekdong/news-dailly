@@ -24,7 +24,11 @@ export class Plan {
     return Promise.all(this.sources.map(async (source) => {
       if (source.type === 'rss') {
         sendLog({
-          message: `RSS 开始解析任务: ${source.url}`,
+          message: {
+            content: `RSS 类型`,
+            name: '任务类型',
+            key: source.url,
+          },
           type: 'info',
         })
         const rssPlan = new RssPlan({
@@ -39,7 +43,11 @@ export class Plan {
       }
       else if (source.type === 'github') {
         sendLog({
-          message: `Github 开始解析任务: ${source.url}`,
+          message: {
+            content: `Github 类型`,
+            name: '任务类型',
+            key: source.url,
+          },
           type: 'info',
         })
         const githubPlan = new GithubPlan({
@@ -54,7 +62,11 @@ export class Plan {
       }
       else if (source.type === 'web') {
         sendLog({
-          message: `Web 开始解析任务: ${source.url}`,
+          message: {
+            content: `Web 类型`,
+            name: '任务类型',
+            key: source.url,
+          },
           type: 'info',
         })
         const webPlan = new WebPlan({
@@ -67,6 +79,14 @@ export class Plan {
           url: source.url,
         }
       }
+      sendLog({
+        message: {
+          content: `未知类型`,
+          name: '任务类型',
+          key: source.url,
+        },
+        type: 'info',
+      })
       return {
         name: source.name,
         items: [],

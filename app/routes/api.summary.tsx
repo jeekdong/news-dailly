@@ -1,5 +1,5 @@
-import { json } from "@remix-run/node";
-import type { ActionFunctionArgs } from "@remix-run/node";
+import { json } from '@remix-run/node'
+import type { ActionFunctionArgs } from '@remix-run/node'
 
 import { getMainWebByUrl } from '~/services/utils/get-main-web'
 import { LLM } from '~/services/llm'
@@ -7,27 +7,27 @@ import { LLM } from '~/services/llm'
 // TODO: 修改
 import { buildSummaryPrompt } from '~/utils/prompt'
 
-export const action = async ({ request }: ActionFunctionArgs) => {
+export async function action({ request }: ActionFunctionArgs) {
   let url = ''
   try {
-    const body = await request.json();
+    const body = await request.json()
     url = body.url
-  } catch(err) {
+  }
+  catch (err) {
     console.log('/api/summary 请求解析错误', err)
-    return json({ code: 1, message: "请求解析错误" });
+    return json({ code: 1, message: '请求解析错误' })
   }
 
   const parseResult = await getMainWebByUrl(url)
-  if (!parseResult.success) {
-    return json({ code: 2, message: "url 解析错误" });
-  }
+  if (!parseResult.success)
+    return json({ code: 2, message: 'url 解析错误' })
+
   const llm = new LLM()
 
   const content = await llm.chat({
     content: parseResult.content,
-    system: buildSummaryPrompt()
+    system: buildSummaryPrompt(),
   })
 
-  return json({ code: 0,  content, message: "解析成功" });
-
+  return json({ code: 0, content, message: '解析成功' })
 }

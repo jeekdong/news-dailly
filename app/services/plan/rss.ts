@@ -55,11 +55,27 @@ export class RssPlan implements IPlanStrategy {
   async fetchUpdateWithSummary() {
     const items = await this.fetchUpdateItem()
     if (this.detailMode === 'content') {
+      sendLog({
+        message: {
+          content: `获取${items.length}项内容`,
+          name: '更新内容数',
+          key: this.url,
+        },
+        type: 'info',
+      })
       return Promise.all(items.map(async (item) => {
         const summary = await this.getSummary(item.content || '')
 
         sendLog({
-          message: `RSS 获取内容: ${this.url}, 标题: ${item.title}, 总结: ${summary} 日期: ${dayjs(item.pubDate || '').format('YYYY-MM-DD HH:mm:ss')}`,
+          message: {
+            name: '获取内容',
+            content: {
+              title: item.title,
+              summary,
+              date: dayjs(item.pubDate || '').format('YYYY-MM-DD HH:mm:ss'),
+            },
+            key: this.url,
+          },
           type: 'info',
         })
         return {

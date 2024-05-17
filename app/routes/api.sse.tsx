@@ -17,7 +17,10 @@ export const loader: LoaderFunction = ({ request }) => {
 
     sendLog({
       type: 'info',
-      message: 'server sent event',
+      message: {
+        content: 'ping',
+        name: 'ping',
+      },
     })
 
     // event listener itself

@@ -1,19 +1,14 @@
 {
   "feeds": [
     {
-      "name": "前端早读课",
+      "name": "晚点Auto",
       "type": "rss",
-      "url": "http://www.jintiankansha.me/rss/GEZDAMRXPQ4GIMZTG44DMZTFGE3DMMTBMYYDQZLGMVTGKMZZGI3DSMJWMI4TSNTBG4ZWMYLDME======"
+      "url": "http://www.jintiankansha.me/rss/GM2DCMRUG56DAOJXGQZWMY3CMZQWINZRGRRDKYRVMY2TIZJYMY2DEZTDGQYWGN3GG5SDQY3EGUZQ===="
     },
     {
-      "name": "TypeScript 博客",
-      "type": "blog",
-      "url": "https://devblogs.microsoft.com/typescript/"
-    },
-    {
-      "url": "https://github.com/hijiangtao/javascript-articles-monthly",
-      "name": "JavaScript 文章精选月刊",
-      "type": "github"
+      "name": "前端进阶",
+      "type": "rss",
+      "url": "http://www.jintiankansha.me/rss/GMZTMNBVGR6GINDDHBSDCNZQME2DCZDCHEYTQYJSGNRDOOJQGMZGEYJQG43GENTDG43TIZJTGQ4A===="
     }
   ]
 }

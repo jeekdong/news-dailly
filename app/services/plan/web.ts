@@ -84,9 +84,26 @@ export class WebPlan implements IPlanStrategy {
 
     const result = items.filter(item => dayjs(item.date).isAfter(dayjs().subtract(1, this.period)))
 
+    sendLog({
+      message: {
+        content: `获取${result.length}项内容`,
+        name: '更新内容数',
+        key: this.url,
+      },
+      type: 'info',
+    })
+
     return result.map((item) => {
       sendLog({
-        message: `Web 获取内容: ${this.url}, 标题: ${item.title}, 总结: ${item.content} 日期: ${dayjs(item.date).format('YYYY-MM-DD HH:mm:ss')}`,
+        message: {
+          name: '获取内容',
+          content: {
+            title: item.title,
+            content: item.content,
+            date: dayjs(item.date).format('YYYY-MM-DD HH:mm:ss'),
+          },
+          key: this.url,
+        },
         type: 'info',
       })
       return {
