@@ -1,5 +1,10 @@
 export type Period = 'day' | 'week' | 'month'
 
+export interface Duration {
+  start: number
+  end: number
+}
+
 export interface Source {
   name: string
   url: string

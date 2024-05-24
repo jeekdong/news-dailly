@@ -1,25 +1,26 @@
 import dayjs from 'dayjs'
 
-import { GithubLoader } from '../loader/githhub'
+import { GithubLoader } from '../loader/github'
 import { LLM } from '../llm'
 import type { IPlanStrategy } from './common'
 
 import { buildGithubCommitSummaryPrompt } from '~/utils/prompt'
 
-import type { Period, Source } from '~/types/plan'
+import type { Duration, Source } from '~/types/plan'
 
 import { sendLog } from '~/services/utils/sse'
+import { DEFAULT_DURATION } from '~/utils/constants'
 
 export class GithubPlan implements IPlanStrategy {
-  public period: Period
+  public duration: Duration
   public source: Source
   public loader: GithubLoader
 
   constructor(options: {
-    period?: Period
+    duration?: Duration
     source: Source
   }) {
-    this.period = options.period || 'day'
+    this.duration = options.duration || DEFAULT_DURATION
     this.source = options.source
     this.loader = new GithubLoader({
       repoUrl: options.source.url,
@@ -42,7 +43,8 @@ export class GithubPlan implements IPlanStrategy {
 
   async fetchUpdateWithSummary() {
     const commits = await this.loader.parse({
-      since: dayjs().subtract(1, this.period).toISOString(),
+      since: dayjs(this.duration.start).toISOString(),
+      until: dayjs(this.duration.end).toISOString(),
     }) || []
     sendLog({
       message: {

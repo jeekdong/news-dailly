@@ -1,11 +1,12 @@
 import { json } from '@remix-run/node'
 import type { ActionFunctionArgs } from '@remix-run/node'
+import dayjs from 'dayjs'
 
 import {
   Plan,
 } from '~/services/plan'
 import type { Period, Source } from '~/types/plan'
-import source from '~/source.json'
+import source from '~/data/frontend.json'
 
 import {
   sendLog,
@@ -31,9 +32,15 @@ export async function action({ request }: ActionFunctionArgs) {
   const body = await request.formData()
 
   // start plan
+  const duration = body.get('start') && body.get('end')
+    ? {
+        start: dayjs(body.get('start') as string).startOf('d').valueOf(),
+        end: dayjs(body.get('end') as string).endOf('d').valueOf(),
+      }
+    : undefined
   const plan = new Plan({
     sources: source.feeds as Source[],
-    period: body.get('period') as Period,
+    duration,
   })
   plan.fetchUpdateWithSummary().then((result) => {
     sendLog({

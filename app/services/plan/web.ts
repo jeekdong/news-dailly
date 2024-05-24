@@ -5,20 +5,21 @@ import { buildWebPageItemsPrompt, buildWebPageItemsWithTools } from '~/utils/pro
 
 import { LLM } from '~/services/llm'
 
-import type { Period } from '~/types/plan'
+import type { Duration } from '~/types/plan'
+import { DEFAULT_DURATION } from '~/utils/constants'
 
 import { sendLog } from '~/services/utils/sse'
 
 export class WebPlan implements IPlanStrategy {
-  public period: Period
+  public duration: Duration
   public url: string
   public loader: WebLoader
 
   constructor(options: {
-    period?: Period
+    duration?: Duration
     url: string
   }) {
-    this.period = options.period || 'day'
+    this.duration = options.duration || DEFAULT_DURATION
     this.url = options.url
     this.loader = new WebLoader()
   }
@@ -82,7 +83,10 @@ export class WebPlan implements IPlanStrategy {
   async fetchUpdateWithSummary() {
     const items = await this.fetchItems()
 
-    const result = items.filter(item => dayjs(item.date).isAfter(dayjs().subtract(1, this.period)))
+    const result = items.filter((item) => {
+      return dayjs(item.date).valueOf() >= this.duration.start
+        && dayjs(item.date).valueOf() <= this.duration.end
+    })
 
     sendLog({
       message: {

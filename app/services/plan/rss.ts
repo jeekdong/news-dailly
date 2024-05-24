@@ -8,19 +8,22 @@ import type { IPlanStrategy } from './common'
 import { buildSummaryPrompt } from '~/utils/prompt'
 
 import { sendLog } from '~/services/utils/sse'
+import type { Duration } from '~/types/plan'
+import { DEFAULT_DURATION } from '~/utils/constants'
 
 export class RssPlan implements IPlanStrategy {
-  public period: 'day' | 'week' | 'month'
+  public duration: Duration
   public url: string
   public loader: RssLoader
   public detailMode: 'full' | 'content'
 
   constructor(options: {
-    period?: 'day' | 'week' | 'month'
+    duration?: Duration
     url: string
     detailMode?: 'full' | 'content'
   }) {
-    this.period = options.period || 'day'
+    // 默认昨天
+    this.duration = options.duration || DEFAULT_DURATION
     this.url = options.url
     this.detailMode = options.detailMode || 'content'
     this.loader = new RssLoader()
@@ -30,7 +33,8 @@ export class RssPlan implements IPlanStrategy {
     const feeds = await this.loader.parse(this.url)
     // 根据时间判断是否有更新
     const updateItems = feeds.items.filter((item) => {
-      return dayjs(item.pubDate || '').isAfter(dayjs().subtract(1, this.period))
+      return dayjs(item.pubDate || '').valueOf() >= this.duration.start
+        && dayjs(item.pubDate || '').valueOf() <= this.duration.end
     })
     return updateItems
   }

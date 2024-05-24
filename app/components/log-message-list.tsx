@@ -12,6 +12,10 @@ import type {
   InfoItem,
 } from '~/types/plan'
 
+import {
+  LOG_NAME,
+} from '~/utils/constants'
+
 interface LogMessageListProps {
   list: LogData[]
 }
@@ -72,7 +76,7 @@ export function ResultMessage({
 export function LogMessage({
   message,
 }: LogMessageProps) {
-  if (message.name === 'plan-end') {
+  if (message.name === LOG_NAME.PLAN_END) {
     return message.content.map((item: InfoItem) => (
       <ResultMessage
         data={item}

@@ -1,8 +1,11 @@
 {
   "name": "frontend-daily",
+  "type": "module",
   "private": true,
   "sideEffects": false,
-  "type": "module",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "build": "remix vite:build",
     "dev": "remix vite:dev",
@@ -12,6 +15,9 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.20.1",
+    "@html2canvas/html2canvas": "^1.6.0",
+    "@iconify-icon/react": "^2.1.0",
+    "@internationalized/date": "^3.5.3",
     "@mozilla/readability": "^0.5.0",
     "@nextui-org/react": "^2.3.6",
     "@remix-run/node": "^2.8.1",
@@ -54,8 +60,5 @@
     "typescript": "^5.1.6",
     "vite": "^5.1.0",
     "vite-tsconfig-paths": "^4.2.1"
-  },
-  "engines": {
-    "node": ">=18.0.0"
   }
 }
